@@ -73,6 +73,10 @@ const Requirements = () => {
           <RequirementTable
             requirementsData={requirementsData}
             monthKeys={monthKeys}
+            fetchRequirements={fetchRequirements}
+            state={state}
+            monthGroup={monthGroup}
+            year={year}
           />
         ) : (
           <p>

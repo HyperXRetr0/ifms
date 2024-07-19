@@ -5,9 +5,25 @@ import toast from "react-hot-toast";
 export type Props = {
   requirementsData: any;
   monthKeys: string[];
+  fetchRequirements: (
+    state: string,
+    year: string,
+    product: string,
+    monthGroup: string
+  ) => void;
+  state: string;
+  year: string;
+  monthGroup: string;
 };
 
-const RequirementTable = ({ requirementsData, monthKeys }: Props) => {
+const RequirementTable = ({
+  requirementsData,
+  monthKeys,
+  fetchRequirements,
+  state,
+  year,
+  monthGroup,
+}: Props) => {
   const [data, setData] = useState(requirementsData);
   const [pendingChanges, setPendingChanges] = useState<any[]>([]);
 
@@ -63,13 +79,12 @@ const RequirementTable = ({ requirementsData, monthKeys }: Props) => {
 
       console.log("Payloads to be sent:", payloads);
 
-      await Promise.all(
-        payloads.map((payload) => apiClient.createRequirements(payload))
-      );
-
+      for (const payload of payloads) {
+        await apiClient.createRequirements(payload);
+      }
+      await fetchRequirements(state, year, data.product, monthGroup);
       toast.success("Update Successful");
       setPendingChanges([]);
-      location.reload();
     } catch (error) {
       console.error("Error updating requirements:", error);
       toast.error("Error updating requirements");
