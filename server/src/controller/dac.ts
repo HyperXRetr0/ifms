@@ -65,7 +65,6 @@ export const getDacApprovedData = async (req: Request, res: Response) => {
       });
     }
 
-    // Aggregate DacApprovedQuantity based on state, product, and months
     const data = await DacApprovedQuantity.aggregate([
       {
         $match: {
@@ -104,7 +103,6 @@ export const getDacApprovedData = async (req: Request, res: Response) => {
       },
     ]);
 
-    // Prepare response data structure
     const stateMap = new Map<string, any>();
     const monthTotals: { [key: string]: number } = {};
     const states = await State.find({});
@@ -167,7 +165,6 @@ export const changeDacApproved = async (req: Request, res: Response) => {
     const stateDoc = await State.findOne({ state });
     const productDoc = await Product.findOne({ product });
 
-    // Check if state and product exist
     if (!stateDoc || !productDoc) {
       return res.status(404).json({
         success: false,
@@ -175,7 +172,6 @@ export const changeDacApproved = async (req: Request, res: Response) => {
       });
     }
 
-    // Check if there's an existing requirement in DacApprovedQuantity
     const existingRequirement = await DacApprovedQuantity.findOne({
       state: stateDoc._id,
       product: productDoc._id,
@@ -183,11 +179,9 @@ export const changeDacApproved = async (req: Request, res: Response) => {
     });
 
     if (existingRequirement) {
-      // Update quantity if existing requirement found
       existingRequirement.quantity = quantity;
       await existingRequirement.save();
     } else {
-      // Create new requirement if not found
       const newRequirement = new DacApprovedQuantity({
         state: stateDoc._id,
         product: productDoc._id,
@@ -197,7 +191,6 @@ export const changeDacApproved = async (req: Request, res: Response) => {
       await newRequirement.save();
     }
 
-    // Prepare arguments for saveToFinal function
     const args = {
       state: stateDoc,
       quantity,
@@ -205,7 +198,6 @@ export const changeDacApproved = async (req: Request, res: Response) => {
       product: productDoc,
     };
 
-    // Call saveToFinal to update Finalized model
     await saveToFinal(args);
 
     return res.status(201).json({

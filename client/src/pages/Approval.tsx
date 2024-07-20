@@ -54,6 +54,7 @@ const Approval = () => {
           <StateRequirementTable
             requirementsData={requirementsData}
             monthKeys={monthKeys}
+            fetchRequirements={fetchRequirements}
           />
         ) : (
           <p>

@@ -17,11 +17,7 @@ const Finalized = () => {
   const state = currentUser?.state;
   const [requirementsData, setRequirementsData] = useState<any>(null);
 
-  const fetchRequirements = async (
-    state: string,
-    year: string,
-    month: string
-  ) => {
+  const fetchRequirements = async () => {
     sessionStorage.setItem("year", year.toString());
     sessionStorage.setItem("monthGroup", month.toString());
     try {
@@ -38,7 +34,7 @@ const Finalized = () => {
 
   useEffect(() => {
     if (state && year && month) {
-      fetchRequirements(state, year, month);
+      fetchRequirements();
     }
   }, [state, year, month]);
 
@@ -57,7 +53,12 @@ const Finalized = () => {
       />
       <div className="mx-10">
         {requirementsData ? (
-          <FinalizedTable requirementsData={requirementsData} />
+          <FinalizedTable
+            requirementsData={requirementsData}
+            fetchRequirements={fetchRequirements}
+            state={state}
+            month={month}
+          />
         ) : (
           <p>
             No data available. Please fill out the form to fetch requirements.

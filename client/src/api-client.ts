@@ -206,3 +206,20 @@ export const fetchFinalizedRequirements = async (
   }
   return data.data;
 };
+
+export const updateFinalized = async (dataArgs: any) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/finalized/update-final`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dataArgs),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

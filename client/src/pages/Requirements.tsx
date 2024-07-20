@@ -20,12 +20,7 @@ const Requirements = () => {
   const state = currentUser?.state;
   const [requirementsData, setRequirementsData] = useState<any>(null);
 
-  const fetchRequirements = async (
-    state: string,
-    year: string,
-    product: string,
-    monthGroup: string
-  ) => {
+  const fetchRequirements = async () => {
     sessionStorage.setItem("year", year.toString());
     sessionStorage.setItem("product", product.toString());
     sessionStorage.setItem("monthGroup", monthGroup.toString());
@@ -44,7 +39,7 @@ const Requirements = () => {
 
   useEffect(() => {
     if (state && year && product && monthGroup) {
-      fetchRequirements(state, year, product, monthGroup);
+      fetchRequirements();
     }
   }, [state, year, product, monthGroup]);
 
@@ -74,9 +69,6 @@ const Requirements = () => {
             requirementsData={requirementsData}
             monthKeys={monthKeys}
             fetchRequirements={fetchRequirements}
-            state={state}
-            monthGroup={monthGroup}
-            year={year}
           />
         ) : (
           <p>

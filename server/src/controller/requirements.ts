@@ -141,7 +141,7 @@ export const getRequirements = async (req: Request, res: Response) => {
       };
       months.forEach((month) => {
         districtData.monthlyQuantities[month] = 0;
-        monthTotals[month] = 0; // Initialize month totals
+        monthTotals[month] = 0;
       });
       districtMap.set(district.district, districtData);
     });
